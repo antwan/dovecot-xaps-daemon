@@ -171,7 +171,8 @@ func (apns *Apns) SendNotification(registration database.Registration, delayed b
 	if mailbox != "" {
 		hash := md5.Sum([]byte(mailbox))
 		mailbox_hash := hex.EncodeToString(hash[:])
-		composedPayload = append(composedPayload, []byte(`, "m":"`+mailbox_hash+`"`)...)
+		composedPayload = append(composedPayload, []byte(`, "m":["`+mailbox_hash+`"]`)...)
+		composedPayload = append(composedPayload, []byte(`, "subtopic":"com.apple.mobilemail"`)...)
 	}
 	composedPayload = append(composedPayload, []byte(`}}`)...)
 	notification.Payload = composedPayload
